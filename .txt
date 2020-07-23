@@ -1,0 +1,234 @@
+    npm install @material-ui/core
+	npm install @material-ui/icons
+	npm install redux react-redux redux-thunk
+	npm install axios
+	npm install --save react-toastify
+    npm install --save redux-saga
+npm install --save react-router-dom
+	 npm install --save query-string
+	 npm install classnames --save
+- run server :
+		json-server db.json
+127 : redux-saga : generator là gì
+    - yield chỉ xuất hiện bên trong generator function
+    tương đồng vơi return
+    - trì hoãn việc thực thi các đoạn code tiếp theo
+    - Dừng lại .Sau đó bắt đầu từ điểm kết thúc
+129 : impost redux-saga  trong (redux/configure)
+    - add , impost saga vào redux/configure
+    - add  rootSaga vào  redux/configure từ folder sagas
+    -
+130 Fork (redux-saga/effects)
+    - là một non-blocking ( k chờ đợi nhau) , blocking (chờ đợi nhau)
+    - giúp chúng ta vẽ ra 1 quy trình mới để thực hiện 1 quy trình
+    gì đó
+    - Fork gọi là 1 bộ theo dõi, bộ theo dõi các action là 1
+    generator function
+    - sử dụng Fork để xử lý nhiều saga
+    - Saga Effects : quản lý các effects dựa vào các helper : Fork,take,call
+    - Trả về các mô ta login ở dạng đối tượng (effects)
+131 Take and call
+    Take :  Đầu vào là 1 action
+        - Dùng phản hồi các action khi các action đó đc dispatch( được thực thi)\
+        - Thuộc redux-saga/effects
+        - Lệnh take sẽ được kích hoạt và tham gia vào saga khi 1 action được dispatch
+        - Ban đầu nó sẽ tạm dừng đến khi nhận action
+        - Là một blocking
+        - Lệnh bên dưới take chỉ chạy khi action nó nhận vào đc dispatch
+    call : Thường để gửi request API (gọi api xong mới chạy tiếp)
+        - là một blocking
+        - Giống thực thi 1 function . Trả về promise và sẽ tạm dừng
+        saga cho đến khi promise đc resolved
+
+    Put  : Dùng để dispatch action
+        - là non-blocking
+        - có thể put cùng lúc nhiều action
+        - đầu vào là 1 action
+
+    - Khi FETCH_TASK(actions) được gọi nhờ load saga được đánh thức
+    - sau đó gọi call api
+    - thành công thì put(dispatch) các action (if/else)
+
+    - nếu click lần 2 load data thì k còn load dữ liệu nữa
+    - take chỉ load 1 lần thì nó đã xong của hàm ngoài cùng(watchFetchListTaskAction)
+    - sử dụng vòng lặp vô tận
+
+    delay : là 1 blocking
+        - Chặn để thực thi trong 1 khoảng time miliseconds
+
+    -tóm tắt :
+        Khác biệt thunk xử lý khó khăn : hủy bỏ những yêu cầu cũ khi
+        có 1 request mới
+
+135 : TakeLatest
+		- Phiên bản nâng cao của thằng fork và thằng take
+		- Hủy bỏ quy trình cũ khi có 1 quy trình mới bắt đầu
+		- Nếu thực hiện 1 loạt các action thì TakeLatest chỉ thực thi
+		và lấy kế quả của action cuối cùng
+		- Không cần vòng lặp vô hạn
+		Demo : chức năng search , tìm kiếm
+
+		- tạo mới Srearch Box
+			- tạo file Srearch Box  trong Components
+			- Thêm vào taskBoard
+			- thêm hàm xử lý(handleFilter,renderSearchBox)
+136 : akeLatest P2, Select, TakeEvery
+		- filterTaskSaga() phải có delay nếu không thì mỗi hành động nó sẽ action
+		ngay lập tức (k cần while )
+		- có delay nó sẽ thực hiện đúng sau time quy định
+
+	- Select : lấy data từ store tại saga
+	- TakeEvery : ngược lại vs TakeLatest , chạy ngay lập tức  nếu được kích hoạt
+	chạy không tính số lần, gọi là chạy(gọi liên tục) , k cần biết action trước đã chạy xong chưa
+
+        - Demo (thay thê TakeLatest ) : chức năng filter nếu k cần giữ lại hành động của người dùng
+
+        -	khi sử dụng  TakeEvery nó sẽ gọi api id  liên tục  k tốt web
+        - nếu không cần giữ lại hành vi của người dùng :
+            c1 : dùng fork cùng với vòng lặp vô tận và take
+            c2 : TakeLatest
+            c3 : TakeEvery
+        - giữ lại hành vi  người dùng
+            c1 : lastest
+
+137 : helper All và chức năng add công việc
+139 : tích hợp redux Model
+140 tích hợp redux from :
+	- Giúp quản lý value state tốt hơn so với quản lý (trong state của redux)
+	-npm install redux-form
+
+( formik ) thấy dùng nhiều hơn
+141 : tích hợp redux-Form vs material Ui
+		- thêm folder Form helper (TextHelPer)
+		- ngoài label input meta thì những prop còn lại đều đi
+		vào custom
+		- Các bước :
+			- add thư viện
+			- add trong(reducer/index)
+			- Trong Containers/taskForm  add trong export, prototype
+			- add folder FormHelper /TextHelPer
+			- config trong TextHelPer
+			- change TextFiled của material(taskForm) bằng Field(redux-from)
+			-
+142  redux-validate
+		- create validate file
+		- add validate vao withReduxForm(Containers/taskForm/index)
+		- config bắt lỗi ở validate file
+		- thêm chức năng disabled khi chưa nhập đúng hay chưa nhập
+		invalid và submitting lấy từ prop của redux-from
+
+
+143 Chức năng thêm mới công việc
+	- add  constants (task)
+	- add actions (task)
+	- add reducer (task)
+	- check combine
+	- add apis, axiosService
+	- add trong saga
+	- add connect tại taskForm
+
+144 : update chức năng tìm kiếm
+	-  json-server / full-text search (chức năng tìm kieemsc của bên server)
+
+	- add : npm install --save query-string
+	-
+145 cập nhật công việc
+	- Từ taskItem truyền props onClickEdit ra task List
+	- Từ taskList truyền props onClickEdit(task) có data
+	- từ taskBoard nhận đc task mà taskList truyền cho nó  ( handleEditTask)
+	-  add constants -> action -> reducer ->saga
+	- prop function setTaskEditting
+	-  (taskBoard) add tại function  openfrom setTaskEditting và truyền null -> khi ấn add thì data sẽ null
+	- (taskBoard) add tại func handleEditTask modelActionCreator
+				setTaskEditing(task);
+		const {
+			showModal,
+			changeModalTitle,
+			changeModalContent,
+		} = modalActionCreators;
+		showModal();
+		changeModalTitle("Sửa công việc");
+		// có tuyền data(task ở đây sang để sửa ) or use store
+		changeModalContent(<TaskForm />);
+
+	-  đổ dữ liệu vào form k hiển thì
+	-  sử dụng ReduxForm
+
+	- 		// có tuyền data (task ở taskBoard sang để sửa ) or use store
+	c1
+	- add 	initialValues: state.task.taskEditing trong mapStatetoProps
+
+	c2
+		initialValues: {
+			title: state.task.taskEditing.title,
+			description: state.task.taskEditing.title,
+		},
+	// k cần taskEditing vì có initialValues sẽ tự động
+	// thêm vào from
+
+146 : 	update phần 2
+		-  add constants -> action
+		-  bổ sung chức năng edit status (add k có)
+		- Tương tự tạo Field  của modal áp dụng redux-material-ui
+		-  floder mới trong  Components/form helper
+		-
+147 cập nhật công việc phần 3
+		- sửa updatetask trong actions/task
+		- thêm thương thức put trong apis
+		- thêm phương thức put tong theme axiosService
+		- gọi api trong saga
+		- dispatch action khi click
+		-
+
+150-151 Xây dựng dashboard
+	- 	install router-dom
+	- add router vào constants/index
+	- cấu hình lại trong app
+	- add các fordel
+
+152 Xây dựng header
+	-
+	// dùng để làm responsive ơ trong material ui
+	// [theme.breakpoints.up("md")]: {
+	// 	display: "none",
+	// },
+	- gặp lỗi giao diện sẽ cách magrin 8px
+	- sử dụng cssBaseline
+	- import vào app và thêm sau theme
+
+
+156 dashboard vs Redux
+	- add  constants (ui)
+	- add actions (ui)
+	- add reducer (ui)
+	- truyền giá trị (bool) của sidebar để điểu kiển open
+	- dashboard điều khiển chung
+	- tạo handleToggleSidebar
+	- truyền giá trị  hiện tại của sidebar sang header để button điều kiển
+	và cả handleToggleSidebar
+167 Animation  :
+	- npm install classnames --save
+	- sử dụng nhiều class name tại 1 element
+
+Note :  -Containers là nơi connect tới redux lấy các state và dispatch các
+        action
+        - Components : dùng để hiển thị
+		- Redux : chứa file cầu hình store và tích hợp các
+		middleware 	, ngoài ra còn có thể chứa các middleware khác cần thiêt
+		- common (tác dụng tương tự module)
+		- apis :  chứa các hàm sẽ gọi api riêng biệt cho các module(axiosService/module)
+		- helper : chứa các hàm xài chung ( có thể viết trong common)
+        - assets : chứa các tài nguyên của ứng dụng(hình ảnh ,icon , css)
+
+
+		...middleware : là aray nên dùng dấu 3 chấm (tương đối)
+
+
+viết constants -> action -> reducer -> combine reducer ->connect(globalLoading)
+
+
+LỖi gặp là do   <React.StrictMode> bỏ đi là đc
+
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,

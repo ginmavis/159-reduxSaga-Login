@@ -170,7 +170,7 @@ npm install --save react-router-dom
 		-  add constants -> action
 		-  bổ sung chức năng edit status (add k có)
 		- Tương tự tạo Field  của modal áp dụng redux-material-ui
-		-  floder mới trong  Components/form helper
+		-  folder mới trong  Components/form helper
 		-
 147 cập nhật công việc phần 3
 		- sửa updatetask trong actions/task
@@ -206,10 +206,16 @@ npm install --save react-router-dom
 	- tạo handleToggleSidebar
 	- truyền giá trị  hiện tại của sidebar sang header để button điều kiển
 	và cả handleToggleSidebar
-167 Animation  :
+157 Animation  :
 	- npm install classnames --save
 	- sử dụng nhiều class name tại 1 element
-
+159 Xây dựng giao diện login
+	- Add thêm folder defaultLayoutRoute
+	-
+160
+	sử dụng withRouter( thay vì truyền match  hay history như các phần trước
+	để getlink và backup)
+	- nó sẽ bao gồm history, location,match
 Note :  -Containers là nơi connect tới redux lấy các state và dispatch các
         action
         - Components : dùng để hiển thị

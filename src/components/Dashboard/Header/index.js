@@ -18,6 +18,8 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import styles from "./styles";
 import PropTypes from "prop-types";
 import MenuItem from "@material-ui/core/MenuItem";
+import { withRouter } from "react-router-dom";
+import { compose } from "redux";
 
 const menuId = "primary-search-account-menu";
 const mobileMenuId = "primary-search-account-menu-mobile";
@@ -100,6 +102,14 @@ class Header extends Component {
 			anchorEl: null,
 		});
 	};
+
+	handleLogout = () => {
+		// console.log("logout", this.props);
+		const { history } = this.props;
+		if (history) {
+			history.push("/login");
+		}
+	};
 	renderMenu = () => {
 		const { anchorEl } = this.state;
 		const isMenuOpen = Boolean(anchorEl);
@@ -114,7 +124,7 @@ class Header extends Component {
 				onClose={this.handleMenuClose}
 			>
 				<MenuItem onClick={this.handleMenuClose}>Profile</MenuItem>
-				<MenuItem onClick={this.handleMenuClose}>Logout</MenuItem>
+				<MenuItem onClick={this.handleLogout}>Logout</MenuItem>
 			</Menu>
 		);
 	};
@@ -207,6 +217,8 @@ Header.propTypes = {
 	name: PropTypes.string,
 	showSidebar: PropTypes.bool,
 	onToggleSidebar: PropTypes.func,
+	history: PropTypes.object,
 };
 
-export default withStyles(styles)(Header);
+// export default withStyles(styles)(withRouter(Header));
+export default compose(withStyles(styles), withRouter)(Header);
